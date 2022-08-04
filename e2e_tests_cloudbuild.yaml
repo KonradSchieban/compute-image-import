@@ -12,12 +12,13 @@ options:
 
 substitutions:
   _ZONE: 'europe-west1-c'
+  _PROJECT_ID: 'compute-image-import-test'
 
 steps:
 - id: e2e-test-base
   name: 'gcr.io/kaniko-project/executor:v0.22.0'
   args:
-  - --destination=gcr.io/$PROJECT_ID/e2e-test-base:$COMMIT_SHA
+  - --destination=gcr.io/${_ZONE}/e2e-test-base:$COMMIT_SHA
   - --context=/workspace
   - --dockerfile=e2e_test_base.Dockerfile
 
@@ -25,40 +26,40 @@ steps:
 - id: gce-image-import-export-tests
   name: 'gcr.io/kaniko-project/executor:v0.22.0'
   args:
-  - --destination=gcr.io/$PROJECT_ID/gce-image-import-export-tests:$COMMIT_SHA
+  - --destination=gcr.io/${_PROJECT_ID}/gce-image-import-export-tests:$COMMIT_SHA
   - --context=/workspace
   - --dockerfile=gce_image_import_export_tests.Dockerfile
-  - --build-arg=PROJECT_ID=$PROJECT_ID
+  - --build-arg=PROJECT_ID=${_PROJECT_ID}
 - id: run-gce-image-import-export-tests
-  name: 'gcr.io/$PROJECT_ID/gce-image-import-export-tests:$COMMIT_SHA'
+  name: 'gcr.io/${_PROJECT_ID}/gce-image-import-export-tests:$COMMIT_SHA'
   args:
   - --test_zone="${_ZONE}"
-  - --test_project_id="$PROJECT"
+  - --test_project_id="${_PROJECT_ID}"
 
 # Build and run OVF import tests
 - id: gce-ovf-import-tests
   name: 'gcr.io/kaniko-project/executor:v0.22.0'
   args:
-  - --destination=gcr.io/$PROJECT_ID/gce-ovf-import-tests:$COMMIT_SHA
+  - --destination=gcr.io/${_PROJECT_ID}/gce-ovf-import-tests:$COMMIT_SHA
   - --context=/workspace
   - --dockerfile=gce_ovf_import_tests.Dockerfile
-  - --build-arg=PROJECT_ID=$PROJECT_ID
+  - --build-arg=PROJECT_ID=${_PROJECT_ID}
 - id: run-gce-ovf-import-tests
-  name: 'gcr.io/$PROJECT_ID/gce-ovf-import-tests:$COMMIT_SHA'
+  name: 'gcr.io/${_PROJECT_ID}/gce-ovf-import-tests:$COMMIT_SHA'
   args:
   - --test_zone="${_ZONE}"
-  - --test_project_id="$PROJECT"
+  - --test_project_id="${_PROJECT_ID}"
 
 # Build and run OVF export tests
 - id: gce-ovf-export-tests
   name: 'gcr.io/kaniko-project/executor:v0.22.0'
   args:
-  - --destination=gcr.io/$PROJECT_ID/gce-ovf-export-tests:$COMMIT_SHA
+  - --destination=gcr.io/${_PROJECT_ID}/gce-ovf-export-tests:$COMMIT_SHA
   - --context=/workspace
   - --dockerfile=gce_ovf_export_tests.Dockerfile
-  - --build-arg=PROJECT_ID=$PROJECT_ID
+  - --build-arg=PROJECT_ID=${_PROJECT_ID}
 - id: run-gce-ovf-export-tests
-  name: 'gcr.io/$PROJECT_ID/gce-ovf-export-tests:$COMMIT_SHA'
+  name: 'gcr.io/${_PROJECT_ID}/gce-ovf-export-tests:$COMMIT_SHA'
   args:
   - --test_zone="${_ZONE}"
-  - --test_project_id="$PROJECT"
+  - --test_project_id="${_PROJECT_ID}"
