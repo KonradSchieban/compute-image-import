@@ -22,16 +22,16 @@ steps:
   - --context=/workspace
   - --dockerfile=e2e_test_base.Dockerfile
 
-# Build and run image import-export tests
-- id: gce-image-import-export-tests
+# Build and run image import tests
+- id: gce-image-import-tests
   name: 'gcr.io/kaniko-project/executor:v0.22.0'
   args:
-  - --destination=gcr.io/${_PROJECT_ID}/gce-image-import-export-tests:$COMMIT_SHA
+  - --destination=gcr.io/${_PROJECT_ID}/gce-image-import-tests:$COMMIT_SHA
   - --context=/workspace
-  - --dockerfile=gce_image_import_export_tests.Dockerfile
+  - --dockerfile=gce_image_import_tests.Dockerfile
   - --build-arg=PROJECT_ID=${_PROJECT_ID}
-- id: run-gce-image-import-export-tests
-  name: 'gcr.io/${_PROJECT_ID}/gce-image-import-export-tests:$COMMIT_SHA'
+- id: run-gce-image-import-tests
+  name: 'gcr.io/${_PROJECT_ID}/gce-image-import-tests:$COMMIT_SHA'
   args:
   - --test_zone="${_ZONE}"
   - --test_project_id="${_PROJECT_ID}"
